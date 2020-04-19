@@ -129,11 +129,6 @@ module.exports = function (webpackEnv) {
   };
 
   return {
-    externals: {
-      // Use external version of React
-      react: "React",
-      "react-dom": "ReactDOM",
-    },
     mode: isEnvProduction ? "production" : isEnvDevelopment && "development",
     // Stop compilation early in production
     bail: isEnvProduction,
@@ -514,6 +509,10 @@ module.exports = function (webpackEnv) {
       ],
     },
     plugins: [
+      new webpack.DllReferencePlugin({
+        context: __dirname,
+        manifest: require('../build/library/library.json')
+      }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(
